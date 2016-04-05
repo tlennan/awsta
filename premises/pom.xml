@@ -1,0 +1,75 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.lennan.awsta</groupId>
+		<artifactId>awsta-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>awsta-parent/pom.xml</relativePath>
+	</parent>
+ 
+	<artifactId>awsta-op</artifactId>
+	<name>On Premises</name>
+	<description>Application container for on premises development</description>
+ 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+			      <!-- Import dependency management from Spring Boot -->
+			      <groupId>org.springframework.boot</groupId>
+			      <artifactId>spring-boot-starter-parent</artifactId>
+			      <version>${spring-boot.version}</version>
+			      <type>pom</type>
+			      <scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+ 
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+ 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+			      <exclusion>
+				      <groupId>org.springframework.boot</groupId>
+				      <artifactId>spring-boot-starter-validation</artifactId>
+			      </exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+ 
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-client</artifactId>
+		</dependency>
+	</dependencies>
+ 
+	<build>
+		<plugins>
+			<plugin>
+			      <groupId>org.springframework.boot</groupId>
+			      <artifactId>spring-boot-maven-plugin</artifactId>
+			      <executions>
+				      <execution>
+					      <goals>
+						      <goal>repackage</goal>
+					      </goals>
+				      </execution>
+			      </executions>
+			      <configuration>
+				      <mainClass>${start-class}</mainClass>
+			      </configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
