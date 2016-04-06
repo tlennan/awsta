@@ -11,6 +11,13 @@
 	<artifactId>awsta-aws</artifactId>
 	<name>Amazon Web Services</name>
 	<description>Application container for AWS deployment</description>
+	
+	<repositories>
+		<repository>
+			<id>opensourceagility-release</id>
+			<url>http://repo.opensourceagility.com/release/</url>
+		</repository>
+	</repositories>
  
 	<dependencyManagement>
 		<dependencies>
@@ -43,11 +50,6 @@
 			</exclusions>
 		</dependency>
 		
- <repository>
-    <id>opensourceagility-release</id>
-    <url>http://repo.opensourceagility.com/release/</url
-</repository>
-
 		<!-- Data -->
 		<dependency>
 			<groupId>org.socialsignin</groupId>
