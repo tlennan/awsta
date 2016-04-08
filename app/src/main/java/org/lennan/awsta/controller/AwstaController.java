@@ -1,6 +1,6 @@
 package org.lennan.awsta.controller;
 
-import org.lennan.awsta.data.Widget;
+import org.lennan.awsta.domain.Asset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpHeaders;
@@ -15,85 +15,90 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping(value = "/widget")
+@RequestMapping(value = "/asset")
 public class AwstaController {
 	@Autowired
-	private CrudRepository<Widget, String> repository;
+	private CrudRepository<Asset, String> repository;
+
+	@RequestMapping("/test")
+	public String helloWorld() {
+		return "Awsta is UP";
+	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ResponseEntity<Iterable<Widget>> listAllWidgets() {
-		Iterable<Widget> widgets = repository.findAll();
-		if (!widgets.iterator().hasNext()) {
-			return new ResponseEntity<Iterable<Widget>>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<Iterable<Asset>> listAllAssets() {
+		Iterable<Asset> assets = repository.findAll();
+		if (!assets.iterator().hasNext()) {
+			return new ResponseEntity<Iterable<Asset>>(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<Iterable<Widget>>(widgets, HttpStatus.OK);
+		return new ResponseEntity<Iterable<Asset>>(assets, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Widget> getWidget(@PathVariable("id") String id) {
-		System.out.println("Fetching Widget with id " + id);
-		Widget widget = repository.findOne(id);
-		if (widget == null) {
-			System.out.println("Widget with id " + id + " not found");
-			return new ResponseEntity<Widget>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<Asset> getAsset(@PathVariable("id") String id) {
+		System.out.println("Fetching asset with id " + id);
+		Asset asset = repository.findOne(id);
+		if (asset == null) {
+			System.out.println("Asset with id " + id + " not found");
+			return new ResponseEntity<Asset>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Widget>(widget, HttpStatus.OK);
+		return new ResponseEntity<Asset>(asset, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public ResponseEntity<Void> createWidget(@RequestBody Widget widget, UriComponentsBuilder ucBuilder) {
-		System.out.println("Creating widget " + widget.getName());
+	public ResponseEntity<Void> createAsset(@RequestBody Asset asset, UriComponentsBuilder ucBuilder) {
+		System.out.println("Creating asset " + asset.getName());
 
-		if (repository.exists(widget.getId())) {
-			System.out.println("A Widget with name " + widget.getName() + " already exists");
+		if (repository.exists(asset.getId())) {
+			System.out.println("A asset with name " + asset.getName() + " already exists");
 			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
 		}
 
-		repository.save(widget);
+		repository.save(asset);
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(ucBuilder.path("/widget/{id}").buildAndExpand(widget.getId()).toUri());
+		headers.setLocation(ucBuilder.path("/asset/{id}").buildAndExpand(asset.getId()).toUri());
 		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Widget> updateWidget(@PathVariable("id") String id, @RequestBody Widget widget) {
-		System.out.println("Updating Widget " + id);
+	public ResponseEntity<Asset> updateAsset(@PathVariable("id") String id, @RequestBody Asset asset) {
+		System.out.println("Updating asset " + id);
 
-		Widget currentWidget = repository.findOne(id);
+		Asset currentAsset = repository.findOne(id);
 
-		if (currentWidget == null) {
-			System.out.println("Widget with id " + id + " not found");
-			return new ResponseEntity<Widget>(HttpStatus.NOT_FOUND);
+		if (currentAsset == null) {
+			System.out.println("Asset with id " + id + " not found");
+			return new ResponseEntity<Asset>(HttpStatus.NOT_FOUND);
 		}
 
-		currentWidget.setName(widget.getName());
-		currentWidget.setDescription(widget.getDescription());
+		currentAsset.setName(asset.getName());
+		currentAsset.setDescription(asset.getDescription());
 
-		repository.save(currentWidget);
-		return new ResponseEntity<Widget>(currentWidget, HttpStatus.OK);
+		repository.save(currentAsset);
+		return new ResponseEntity<Asset>(currentAsset, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Widget> deleteWidget(@PathVariable("id") String id) {
-		System.out.println("Fetching & Deleting Widget with id " + id);
+	public ResponseEntity<Asset> deleteAsset(@PathVariable("id") String id) {
+		System.out.println("Fetching & Deleting asset with id " + id);
 
-		Widget widget = repository.findOne(id);
-		if (widget == null) {
-			System.out.println("Unable to delete. Widget with id " + id + " not found");
-			return new ResponseEntity<Widget>(HttpStatus.NOT_FOUND);
+		Asset asset = repository.findOne(id);
+		if (asset == null) {
+			System.out.println("Unable to delete. Asset with id " + id + " not found");
+			return new ResponseEntity<Asset>(HttpStatus.NOT_FOUND);
 		}
 
 		repository.delete(id);
-		return new ResponseEntity<Widget>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Asset>(HttpStatus.NO_CONTENT);
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.DELETE)
-	public ResponseEntity<Widget> deleteAllWidgets() {
-		System.out.println("Deleting All Widgets");
+	public ResponseEntity<Asset> deleteAllAssets() {
+		System.out.println("Deleting All Assets");
 
 		repository.deleteAll();
-		return new ResponseEntity<Widget>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Asset>(HttpStatus.NO_CONTENT);
 	}
 
 }

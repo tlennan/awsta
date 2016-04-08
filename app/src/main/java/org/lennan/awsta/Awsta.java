@@ -1,33 +1,49 @@
 package org.lennan.awsta;
 
-import org.lennan.awsta.data.Widget;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.PostConstruct;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.lennan.awsta.domain.Asset;
+import org.lennan.awsta.repositories.AssetRepository;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.repository.CrudRepository;
 
 @Configuration
 public class Awsta {
 	private int numberOfMessagesReceived = 0;
+	private AssetRepository repository;
+	private Log log = LogFactory.getLog(Awsta.class);
 
-	@Autowired
-	private CrudRepository<Widget, String> repository;
-
-	public Awsta() {
-
-	}
-
-	@Autowired
-	public void setRepository(CrudRepository<Widget, String> repository) {
+	public Awsta(AssetRepository repository) {
 		this.repository = repository;
 
 		repository.deleteAll();
 
 		for (int i = 0; i < 20; i++) {
-			repository.save(new Widget("Widget #" + i, "This is widget number " + i));
+			String owner = "Manny";
+			if (i % 3 == 1) {
+				owner = "Moe";
+			} else if (i % 3 == 2) {
+				owner = "Jack";
+			}
+			repository.save(new Asset("Asset #" + i, "This is asset " + i, owner));
 		}
 	}
 
-	public CrudRepository<Widget, String> getRepository() {
-		return repository;
+	@PostConstruct
+	public void awstaReady() {
+		log.info("Awsta ready");
+		System.out.println("--------------------------------");
+		System.out.println("Listing all IDs");
+		for (Asset asset : repository.findAll()) {
+			System.out.println(asset.getId());
+		}
+
+		// fetch an individual asset
+		System.out.println("--------------------------------");
+		System.out.println("Names of assets owned by 'Manny'");
+		for (Asset asset : repository.findByOwner("Manny")) {
+			System.out.println(asset.getName());
+		}
 	}
 }

@@ -1,20 +1,22 @@
-package org.lennan.awsta.data;
+package org.lennan.awsta.domain;
 
 import org.springframework.data.annotation.Id;
 
-public class Widget {
+public class Asset {
 	@Id
 	private String id;
 
 	private String name;
 	private String description;
+	private String owner;
 
-	public Widget() {
+	public Asset() {
 	}
 
-	public Widget(String name, String description) {
+	public Asset(String name, String description, String owner) {
 		this.name = name;
 		this.description = description;
+		this.owner = owner;
 	}
 
 	public String getId() {
@@ -35,5 +37,13 @@ public class Widget {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 }
