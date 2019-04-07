@@ -5,7 +5,7 @@
 		<groupId>org.lennan.awsta</groupId>
 		<artifactId>awsta-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>awsta-parent/pom.xml</relativePath>
+		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
  
 	<artifactId>awsta-aws</artifactId>

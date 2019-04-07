@@ -5,7 +5,7 @@
 		<groupId>org.lennan.awsta</groupId>
 		<artifactId>awsta-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>awsta-parent/pom.xml</relativePath>
+		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 
 	<artifactId>awsta-core</artifactId>
@@ -25,12 +25,5 @@
 			<artifactId>spring-data-commons-core</artifactId>
 			<version>1.4.1.RELEASE</version>
 		</dependency>
-		
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${springframework.version}</version>
-        </dependency>
 	</dependencies>
 </project>
-		
