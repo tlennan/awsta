@@ -11,7 +11,7 @@ public class AwstaConfiguration {
 	@Autowired
 	AssetRepository repository;
 
-	@Bean(name = "awsta")
+	@Bean
 	public Awsta getAwsta() {
 		return new Awsta(repository);
 	}
