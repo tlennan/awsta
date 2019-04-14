@@ -15,8 +15,8 @@
 	<description>Aggregator project for AWSTA</description>
 	     
 	<modules>
-		<module>awsta-parent</module>
-		<module>awsta-op</module>
-		<module>awsta-aws</module>
+		<module>../parent</module>
+		<module>../premises</module>
+		<module>../aws</module>
 	</modules>
 </project>
