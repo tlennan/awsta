@@ -10,7 +10,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.9</java.version>
 		<spring-boot.version>2.1.4.RELEASE</spring-boot.version>
-		<activemq.version>5.13.2</activemq.version>
+		<activemq.version>5.15.9</activemq.version>
  
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
@@ -136,42 +136,4 @@
 			</plugins>
 		</pluginManagement>
 	</build>
- 
-	<!-- All dependencies are listed here. -->
-	<dependencyManagement>
-		<dependencies>
-			<!-- Spring Boot -->
-			<dependency>
-			      <groupId>org.springframework.boot</groupId>
-			      <artifactId>spring-boot-starter-parent</artifactId>
-			      <version>${spring-boot.version}</version>
-			</dependency>
- 
-			<!-- Faster XML -->
-			<dependency>
-			      <groupId>com.fasterxml.jackson.core</groupId>
-			      <artifactId>jackson-core</artifactId>
-			      <version>2.5.0</version>
-			</dependency>
-			<dependency>
-			      <groupId>com.fasterxml.jackson.core</groupId>
-			      <artifactId>jackson-databind</artifactId>
-			      <version>2.5.0</version>
-			</dependency>
- 
-			<!-- ActiveMQ -->
-			<dependency>
-			      <groupId>org.apache.activemq</groupId>
-			      <artifactId>activemq-client</artifactId>
-			      <version>5.13.2</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter-engine</artifactId>
-				<version>LATEST</version>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 </project>
