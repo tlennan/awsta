@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan("org.tlennan.awsta.controller")
+@ComponentScan("org.lennan.awsta.controller")
 public class PremisesApplication {
 
 	private static Log logger = LogFactory.getLog(PremisesApplication.class);
@@ -22,7 +22,6 @@ public class PremisesApplication {
 	}
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(new Object[] { PremisesApplication.class, PremisesJmsConfiguration.class,
-				MongoConfiguration.class, AwstaConfiguration.class }, args);
+		SpringApplication.run(PremisesApplication.class, args);
 	}
 }
