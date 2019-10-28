@@ -1,8 +1,8 @@
 package org.lennan.awsta.controller;
 
 import org.lennan.awsta.domain.Asset;
+import org.lennan.awsta.repositories.AssetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping(value = "/asset")
 public class AwstaController {
 	@Autowired
-	private CrudRepository<Asset, String> repository;
+	private AssetRepository repository;
 
 	@RequestMapping("/test")
 	public String helloWorld() {
@@ -37,19 +39,19 @@ public class AwstaController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Asset> getAsset(@PathVariable("id") String id) {
 		System.out.println("Fetching asset with id " + id);
-		Asset asset = repository.findOne(id);
-		if (asset == null) {
+		Optional<Asset> asset = repository.findById(id);
+		if (!asset.isPresent()) {
 			System.out.println("Asset with id " + id + " not found");
 			return new ResponseEntity<Asset>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Asset>(asset, HttpStatus.OK);
+		return new ResponseEntity<Asset>(asset.get(), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public ResponseEntity<Void> createAsset(@RequestBody Asset asset, UriComponentsBuilder ucBuilder) {
 		System.out.println("Creating asset " + asset.getName());
 
-		if (repository.exists(asset.getId())) {
+		if (repository.existsById(asset.getId())) {
 			System.out.println("A asset with name " + asset.getName() + " already exists");
 			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
 		}
@@ -65,13 +67,13 @@ public class AwstaController {
 	public ResponseEntity<Asset> updateAsset(@PathVariable("id") String id, @RequestBody Asset asset) {
 		System.out.println("Updating asset " + id);
 
-		Asset currentAsset = repository.findOne(id);
-
-		if (currentAsset == null) {
+		Optional<Asset> currentAssetReference = repository.findById(id);
+		if (!currentAssetReference.isPresent()) {
 			System.out.println("Asset with id " + id + " not found");
 			return new ResponseEntity<Asset>(HttpStatus.NOT_FOUND);
 		}
 
+		Asset currentAsset = currentAssetReference.get();
 		currentAsset.setName(asset.getName());
 		currentAsset.setDescription(asset.getDescription());
 
@@ -83,13 +85,13 @@ public class AwstaController {
 	public ResponseEntity<Asset> deleteAsset(@PathVariable("id") String id) {
 		System.out.println("Fetching & Deleting asset with id " + id);
 
-		Asset asset = repository.findOne(id);
-		if (asset == null) {
+		Optional<Asset> asset = repository.findById(id);
+		if (!asset.isPresent()) {
 			System.out.println("Unable to delete. Asset with id " + id + " not found");
 			return new ResponseEntity<Asset>(HttpStatus.NOT_FOUND);
 		}
 
-		repository.delete(id);
+		repository.deleteById(id);
 		return new ResponseEntity<Asset>(HttpStatus.NO_CONTENT);
 	}
 
