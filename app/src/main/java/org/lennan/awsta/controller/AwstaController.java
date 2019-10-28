@@ -51,11 +51,6 @@ public class AwstaController {
 	public ResponseEntity<Void> createAsset(@RequestBody Asset asset, UriComponentsBuilder ucBuilder) {
 		System.out.println("Creating asset " + asset.getName());
 
-		if (repository.existsById(asset.getId())) {
-			System.out.println("A asset with name " + asset.getName() + " already exists");
-			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-		}
-
 		repository.save(asset);
 
 		HttpHeaders headers = new HttpHeaders();
