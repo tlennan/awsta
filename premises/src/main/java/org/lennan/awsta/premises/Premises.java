@@ -5,7 +5,7 @@ public class Premises {
 	public Premises() {
 		System.out.println("Premises application is created");
 
-		// Do additional premises specific statup here
+		// Do additional premises specific startup here
 	}
 
 }
