@@ -18,17 +18,27 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-			      <!-- Import dependency management from Spring Boot -->
-			      <groupId>org.springframework.boot</groupId>
-			      <artifactId>spring-boot-starter-parent</artifactId>
-			      <version>${spring-boot.version}</version>
-			      <type>pom</type>
-			      <scope>import</scope>
+				<!-- Import dependency management from Spring Boot -->
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-parent</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
- 
+
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.lennan.awsta</groupId>
 			<artifactId>awsta-core</artifactId>
@@ -36,30 +46,21 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-			      <exclusion>
-				      <groupId>org.springframework.boot</groupId>
-				      <artifactId>spring-boot-starter-validation</artifactId>
-			      </exclusion>
-			</exclusions>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
-		</dependency>
- 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-		</dependency>
- 
-		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-client</artifactId>
+		</dependency>
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
  
