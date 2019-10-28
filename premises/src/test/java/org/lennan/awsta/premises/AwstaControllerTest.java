@@ -1,5 +1,6 @@
 package org.lennan.awsta.premises;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,17 +21,19 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
+import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.isDeclaredBy;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -46,6 +49,9 @@ public class AwstaControllerTest {
 
 	@Autowired
 	private AwstaController awstaController;
+
+	@Autowired
+	private ObjectMapper mapper;
 
 	private List<Asset> assets;
 
@@ -100,18 +106,73 @@ public class AwstaControllerTest {
 	}
 
 	@Test
-	public void createAsset()
+	public void createAsset() throws Exception
 	{
+		String newName = "new";
+		String newOwner = "owner";
+		String newDescription = "desc";
+		Asset asset = new Asset();
+		asset.setName(newName);
+		asset.setDescription(newDescription);
+		asset.setOwner(newOwner);
+
+		String json = mapper.writeValueAsString(asset);
+
+		MvcResult result = mockMvc.perform(post("/asset/")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(json))
+				.andExpect(status().isCreated())
+				.andExpect(header().string("Location", startsWith("http://localhost/asset/")))
+				.andReturn();
+
+		String location = result.getResponse().getHeader("Location");
+		String newId = location.substring(location.lastIndexOf("/") + 1);
+
+		Optional<Asset> createdAssetOptional = repository.findById(newId);
+		assertThat(createdAssetOptional.isPresent() == true);
+
+		Asset createdAsset = createdAssetOptional.get();
+		assertThat(createdAsset.getName().equals(newName));
+		assertThat(createdAsset.getDescription().equals(asset.getDescription()));
+		assertThat(createdAsset.getOwner().equals(asset.getOwner()));
 	}
 
 	@Test
-	public void updateAsset()
+	public void updateAsset() throws Exception
 	{
+		String newName = "changed";
+		Asset asset = assets.get(0);
+		asset.setName(newName);
+		String id = asset.getId();
+
+		String json = mapper.writeValueAsString(asset);
+
+		mockMvc.perform(put("/asset/" + id)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(json))
+				.andExpect(status().isOk());
+
+		Optional<Asset> optionalAsset = repository.findById(id);
+		assertThat(optionalAsset.isPresent() == true);
+
+		Asset updatedAsset = optionalAsset.get();
+		assertThat(updatedAsset.getId().equals(asset.getId()));
+		assertThat(updatedAsset.getName().equals(newName));
+		assertThat(updatedAsset.getDescription().equals(asset.getDescription()));
+		assertThat(updatedAsset.getOwner().equals(asset.getOwner()));
 	}
 
 	@Test
-	public void deleteAsset()
+	public void deleteAsset() throws Exception
 	{
+		Asset asset = assets.get(2);
+		String assetId = asset.getId();
+		mockMvc.perform(delete("/asset/" + assetId).accept(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().is2xxSuccessful());
+
+		Optional<Asset> deletedAsset = repository.findById(assetId);
+		assertThat(deletedAsset.isPresent() == false);
 	}
 
 	@Test
