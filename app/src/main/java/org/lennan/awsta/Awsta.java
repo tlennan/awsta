@@ -26,7 +26,7 @@ public class Awsta {
 			} else if (i % 3 == 2) {
 				owner = "Jack";
 			}
-			repository.save(new Asset("Asset #" + i, "This is asset " + i, owner));
+			repository.save(new Asset("asset_" + i, "This is asset " + i, owner));
 		}
 	}
 
