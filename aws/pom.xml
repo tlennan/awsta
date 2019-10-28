@@ -3,15 +3,19 @@
 
 	<parent>
 		<groupId>org.lennan.awsta</groupId>
-		<artifactId>awsta-parent</artifactId>
+		<artifactId>awsta</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../parent/pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
- 
+
 	<artifactId>awsta-aws</artifactId>
 	<name>Amazon Web Services</name>
 	<description>Application container for AWS deployment</description>
-	
+
+	<properties>
+		<start-class>org.lennan.awsta.aws.AwsApplication</start-class>
+	</properties>
+
 	<repositories>
 		<repository>
 			<id>opensourceagility-release</id>
@@ -51,19 +55,22 @@
 		</dependency>
 		
 		<!-- Data -->
+		<!--
 		<dependency>
 			<groupId>org.socialsignin</groupId>
 			<artifactId>spring-data-dynamodb</artifactId>
 			<version>4.2.1</version>
 		</dependency>
-
+-->
 		<!-- Messaging -->
+		<!--
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>amazon-sqs-java-messaging-lib</artifactId>
 			<version>1.0.0</version>
 			<type>jar</type>
 		</dependency>
+		-->
 	</dependencies>
  
 	<build>
